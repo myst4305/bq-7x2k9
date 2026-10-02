@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Boyfriend Quest ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0221;--card:#1a0b3a;--ink:#fff;--mut:#b9a8ff;--acc:#ff4fa3;--cy:#00e5ff;--ok:#39ff88;--bad:#ff4d4d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Press Start 2P","Courier New",monospace;font-size:11px;line-height:1.8;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px)}
+#hud{display:flex;justify-content:space-between;align-items:center;max-width:560px;margin:0 auto;padding:16px 16px 0;color:var(--cy)}
+#l{animation:bl 1s steps(2) infinite}
+@keyframes bl{50%{opacity:.3}}
+#x{color:var(--acc)}
+#app{max-width:560px;margin:0 auto;padding:14px 16px 40px}
+.card{background:var(--card);border:4px solid var(--cy);box-shadow:6px 6px 0 var(--acc);padding:20px;animation:pop .3s steps(4)}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .3s}
+@keyframes bn{50%{transform:translateY(-12px)}}
+.bounce{animation:bn .8s steps(4) infinite}
+h1,h2{margin:0 0 10px;color:var(--acc);font-size:15px;line-height:1.6;font-weight:400}
+.tag{font-size:9px;color:var(--cy);margin-bottom:6px}
+.story{color:var(--mut);white-space:pre-line;margin:10px 0 16px}
+.q{font-size:12px;margin:12px 0}
+.big{font-size:44px;text-align:center}
+button{font:inherit;cursor:pointer}
+.opt{display:block;width:100%;text-align:left;margin:10px 0;padding:12px;border:3px solid var(--cy);background:transparent;color:var(--ink);line-height:1.6}
+.opt:hover:not(:disabled){background:var(--acc);border-color:var(--acc)}
+.opt.x{border-color:var(--bad);opacity:.45;text-decoration:line-through}
+.opt.y{border-color:var(--ok);background:rgba(57,255,136,.2)}
+.btn{background:var(--acc);color:#0d0221;border:0;padding:12px 18px;margin:14px 4px 0;box-shadow:4px 4px 0 var(--cy)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--cy)}
+.msg{min-height:20px;color:var(--bad);margin-top:6px}
+.ok{color:var(--ok);font-size:13px}
+.ach{background:var(--cy);color:#0d0221;padding:10px;margin:12px 0}
+.hp{height:16px;border:3px solid var(--ink);margin:8px 0}
+.hp i{display:block;height:100%;background:var(--bad);transition:width .4s steps(8)}
+.pics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.pics div{border:3px dashed var(--acc);padding:12px 6px;text-align:center;font-size:9px}
+canvas{display:block;width:100%;max-width:300px;margin:10px auto;background:var(--bg);border:3px solid var(--cy);touch-action:none}
+.st div{display:flex;justify-content:space-between;gap:8px;border-bottom:2px dashed var(--mut);padding:7px 0}
+.st b{color:var(--ok);font-weight:400}
+#mu{background:none;border:0;font-size:16px;padding:0 0 0 8px}
+.fh{position:fixed;bottom:-30px;font-size:24px;pointer-events:none;animation:up 6s linear infinite}
+@keyframes up{to{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+.c{text-align:center}
+</style>
+</head>
+<body>
+<div id="hud"><span id="l">READY</span><span id="h"></span><span id="x">XP 0000</span><button id="mu" onclick="mute()">🔊</button></div>
+<div id="app"></div>
+<script>
+var LV=[
+{t:"LEVEL 01 — THE DATING SITE SPAWN",s:"MISSION 01\nTwo strangers were scrolling through a dating site...\nOne match later, the rest became history.\n\nBut do you remember where our story actually began?",q:"Where did Player 1 and Player 2 first meet?",o:["Through mutual friends","On a dating site 💘","At college","Through a gaming app"],c:1,w:"✅ MATCH FOUND!\nYou remembered the original spawn point.",a:"FIRST SPAWN",xp:100,l:"❌ WRONG ANSWER\nBro... you were literally there. 😭"},
+{t:"LEVEL 02 — THE SPEEDRUN",s:"Most people take their time getting to know someone.\nPlayer 2 apparently decided:\n\"Why wait?\" 💀\n\nMISSION: Identify the legendary speedrun.",q:"How quickly did Baabuuda ask Shreya to be his girlfriend?",o:["On the first day","After one month","In the first week","After six months"],c:2,w:"Relationship status changed from\nSTRANGERS → BOYFRIEND/GIRLFRIEND\n\nRecord time: ONE WEEK. 😂❤️",a:"SPEEDRUNNER",xp:100,l:"❌ Nope! Not even close, speedrunner. 💀"},
+{t:"LEVEL 03 — THE SHAWARMA DATE",s:"FIRST DATE DLC UNLOCKED\n\nThere was shawarma. 🌯\nThere was a bike. 🏍️\nAnd there was one girl who apparently had ZERO FEAR.",q:"What happened BEFORE you two had even properly introduced yourselves?",o:["Shreya asked you to sit behind her on the bike.","You both exchanged gifts.","You went to a movie.","Shreya introduced you to her entire family."],c:0,w:"😂 YOU GOT THE MEMORY!\n\n🌯 MEMORY UNLOCKED\nOur first shawarma date. ❤️",a:"\"WHY DID YOU SIT BEHIND ME? WE HADN'T EVEN INTRODUCED OURSELVES.\"",xp:150,l:"❌ Wrong! Think of the bike. 🏍️"},
+{t:"LEVEL 04 — THE 2 AM LORE",s:"2:17 AM\n\nBaabuuda: \"You awake?\"\nShreya: \"Always.\"\n\nQUEST: How many times have \"goodnight\" conversations actually ended in goodnight?",q:"Choose your answer:",o:["Immediately","After 5 minutes","After another 2 hours of talking","We don't know what sleep is."],c:3,w:"🌙 LATE NIGHT TALKER\nSome of our best conversations happened when we were supposed to be sleeping.",a:"LATE NIGHT TALKER",xp:100,l:"❌ Lies. You have never gone to sleep on time. 😂"},
+{t:"LEVEL 05 — CHRISTMAS DLC",s:"NEW DLC INSTALLED\n🎄 CHRISTMAS AT SHREYA'S HOUSE",p:["🎄 Tree & lights","🎁 Gifts","🍰 Party food","📸 Photos together"],q:"Which memory belongs to the Christmas DLC?",o:["🌯 Shawarma date","🎄 Christmas party at Shreya's house","🥾 Family trekking","🪔 Ganapati celebration"],c:1,w:"🎄 MEMORY UNLOCKED\nChristmas wasn't just another event anymore.\nIt became another chapter of us.",a:"CHRISTMAS DLC",xp:100,l:"❌ Wrong DLC! Try again. 🎄"},
+{t:"LEVEL 06 — TEMPLE QUEST",s:"MISSION\nChoose the correct path.",q:"Which path leads to this level's memory?",o:["🌸 PATH A — Temple together","🎮 PATH B — Gaming night","🏔️ PATH C — Trekking"],c:0,w:"🛕 TEMPLE QUEST COMPLETE\n\nNot every memory needs to be loud.\nSome of my favourite memories are simply being somewhere with you. ❤️",a:"TEMPLE EXPLORER",xp:100,l:"❌ Wrong path! You wandered off. 😅"},
+{t:"LEVEL 07 — FAMILY CO-OP MODE",s:"⚠️ WARNING\n\nYou have entered:\nSHREYA'S FAMILY CO-OP MODE\n\nDifficulty: ⭐⭐⭐⭐",q:"Who joined Baabuuda on this trekking quest?",o:["Only Shreya","Shreya + her family","His gaming friends","Nobody, he went alone"],c:1,w:"You survived trekking with the girlfriend AND her family.\n\nRespect. 😂",a:"FAMILY CO-OP UNLOCKED",xp:100,l:"❌ Wrong! The family was definitely there. 🥾"},
+{t:"LEVEL 08 — GANAPATI FESTIVAL ARC",s:"CURRENT DLC\n🪔 GANAPATI FESTIVAL ARC\n\nThis isn't an old memory.\nThis happened this year.\n\nWhich means you've been there for another chapter of Shreya's life.",q:"Which celebration became one of our memories this year?",o:["Christmas","Ganapati celebrations","Diwali only","New Year's Eve"],c:1,w:"🪔 MEMORY SAVED\n\nAnother festival.\nAnother memory.\nAnother chapter.",a:"GANAPATI ARC",xp:150,l:"❌ Wrong festival! 🪔"}
+];
+var BQ=[
+{q:"What food can instantly make Shreya happy?",o:["Pizza","Fish fry 🐟","Salad","Pasta"],c:1},
+{q:"What kind of movies does Shreya love?",o:["Animated movies 🎬","Only action movies","Documentaries","Only horror"],c:0},
+{q:"What is Shreya most likely doing when she is supposed to be working?",o:["Working extremely efficiently","Sleeping","Getting distracted 💀","Exercising"],c:1,w:"CORRECT.\nYou have clearly witnessed this phenomenon firsthand. 😂"},
+{q:"What kind of music does Shreya love singing?",o:["Only classical music","Romantic Bollywood + chatpate songs 🎤","Heavy metal","Country music"],c:1},
+{q:"What happens to Shreya when she gets emotional?",o:["She becomes completely emotionless","She cries 😭","She starts running","She immediately falls asleep"],c:1,w:"😭 BOSS ATTACK: EMOTIONAL DAMAGE"},
+{q:"What is something Shreya loves about Baabuuda?",o:["The cute messages he sends every day ❤️","The way he cares about her ❤️","The fact that he comes to meet her when she asks ❤️","ALL OF THE ABOVE"],c:3}
+];
+var AC=null,M=null,muted=false,mus=null;
+function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();M=AC.createGain();M.connect(AC.destination)}catch(e){}}if(AC&&AC.state=="suspended")AC.resume();return AC}
+function tone(f,t,d,type,v){var a=ac();if(!a||muted)return;var o=a.createOscillator(),g=a.createGain(),s=a.currentTime+(t||0);o.type=type||"square";o.frequency.value=f;g.gain.setValueAtTime(v||.08,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(M);o.start(s);o.stop(s+d+.02)}
+function seq(a,d,type){a.forEach(function(f,i){tone(f,i*d,d*1.4,type||"square",.09)})}
+var SFX={click:function(){tone(700,0,.05,"square",.05)},ok:function(){seq([523,659,784],.08)},bad:function(){tone(200,0,.2,"sawtooth");tone(130,.12,.3,"sawtooth")},over:function(){seq([392,330,262,196],.18,"triangle")},win:function(){seq([523,659,784,1047,784,1047],.11)}};
+function startMusic(){if(mus||muted||!ac())return;var N=[262,330,392,330,294,370,440,370,330,392,494,392,262,330,392,523],B=[131,131,196,196,147,147,220,220,165,165,196,196,131,131,196,196];
+function bar(){N.forEach(function(f,i){tone(f,i*.2,.18,"square",.022)});B.forEach(function(f,i){tone(f,i*.2,.19,"triangle",.05)})}
+bar();mus=setInterval(bar,3200)}
+function mute(){muted=!muted;document.getElementById("mu").textContent=muted?"🔇":"🔊";if(muted){clearInterval(mus);mus=null;if(M)M.gain.value=0}else{if(M)M.gain.value=1;startMusic()}}
+document.addEventListener("click",function(e){ac();if(!mus&&!muted)startMusic();var b=e.target.closest("button");if(b&&b.id!="mu"&&!b.classList.contains("opt"))SFX.click()});
+var S,app=document.getElementById("app");
+function hud(){var h=Math.max(S.h,0),x=S.xp;document.getElementById("h").textContent="❤️".repeat(h)+"🖤".repeat(3-h);document.getElementById("x").textContent="XP "+(typeof x=="number"?String(x).padStart(4,"0"):x);document.getElementById("l").textContent=S.b?"BOSS":S.s?"LV 0"+(S.i+1):"READY"}
+function show(html){app.innerHTML='<div class="card">'+html+'</div>';hud()}
+function start(){document.querySelectorAll(".fh").forEach(function(e){e.remove()});S={i:0,h:3,xp:0,b:0,ach:[],wr:0,go:0,mg:0,s:0,t:Date.now()};show('<div class="big">💘</div><h1 class="c">THE BOYFRIEND QUEST ♡</h1><p class="story c">Player 1: Shreya ♡\nPlayer 2: Baabuuda\n\nQuest: Complete the relationship journey and unlock the final reward.\nYou start with 3 hearts. Wrong answer = lose 1 ❤️</p><div class="c"><button class="btn" onclick="level()">▶ START QUEST</button></div>')}
+function nE(s){return s.replace(/[\u{1F000}-\u{1FFFF}\u2600-\u27BF\uFE0F]/gu,"").replace(/\s+/g," ").trim()}
+function opts(list,fn){return list.map(function(o,i){return '<button class="opt" onclick="'+fn+'('+i+',this)">'+String.fromCharCode(65+i)+'. '+nE(o)+'</button>'}).join("")}
+function level(){var L=LV[S.i];S.s=1;
+show('<div class="tag">'+L.t+'</div><div class="story">'+L.s+'</div>'+(L.p?'<div class="pics">'+L.p.map(function(p){return'<div>'+p+'</div>'}).join("")+'</div>':'')+'<div class="q">'+L.q+'</div>'+opts(L.o,"ans")+'<div class="msg" id="m"></div>')}
+function lose(btn,msg){SFX.bad();S.h--;S.wr++;btn.classList.add("x");btn.disabled=true;hud();app.firstChild.classList.remove("shake");void app.offsetWidth;app.firstChild.classList.add("shake");
+if(S.h<=0){setTimeout(over,700);document.getElementById("m").textContent=msg||"";return false}
+document.getElementById("m").textContent=(msg||"❌ Wrong!")+"  -1 ❤️";return true}
+function over(){SFX.over();S.go++;show('<div class="big">💀</div><h1 class="c">GAME OVER</h1><p class="story c">All 3 hearts gone... 😭\n\n“Okay fine, I\'ll give you another chance.” 😂</p><div class="c"><button class="btn" onclick="retry()">🔁 Try again</button></div>')}
+function retry(){S.h=3;S.b?boss():level()}
+function ans(i,b){var L=LV[S.i];if(i!==L.c){lose(b,L.l);return}
+SFX.ok();S.xp+=L.xp;S.ach.push(L.a);b.classList.add("y");
+setTimeout(function(){show('<div class="tag">'+L.t+'</div><div class="ok">'+L.w.split("\n")[0]+'</div><div class="story">'+L.w.split("\n").slice(1).join("\n")+'</div><div class="ach">🏆 Achievement unlocked: '+L.a+'</div><b>+'+L.xp+' XP</b><div><button class="btn" onclick="next()">Next level ▶</button></div>')},350)}
+function next(){S.i++;if(S.i<LV.length)level();else{S.b=1;S.q=0;bossIntro()}}
+function bossIntro(){show('<div class="big">👹</div><h1 class="c">FINAL BOSS</h1><p class="story c">⚠️ WARNING\nYou have reached the FINAL BOSS.\n\nTHE GIRLFRIEND\n\nThis boss has one weakness:\nActually knowing her. 😌</p><div class="hp"><i style="width:100%"></i></div><div class="c"><button class="btn" onclick="boss()">⚔️ FIGHT</button></div>')}
+function boss(){var Q=BQ[S.q],pct=100-S.q*100/BQ.length;
+show('<div class="tag">👹 BOSS QUESTION 0'+(S.q+1)+' / 0'+BQ.length+'</div><div class="hp"><i style="width:'+pct+'%"></i></div><div class="q">'+Q.q+'</div>'+opts(Q.o,"bans")+'<div class="msg" id="m"></div>')}
+function bans(i,b){var Q=BQ[S.q];if(i!==Q.c){lose(b,"❌ Ouch! The boss hits back.");return}
+SFX.ok();b.classList.add("y");S.xp+=50;
+setTimeout(function(){S.q++;
+if(Q.w){show('<div class="ok">✅ CORRECT</div><p class="story">'+Q.w+'</p><button class="btn" onclick="bn()">Continue ▶</button>')}else bn()},350)}
+function bn(){if(S.q<BQ.length)boss();else crit()}
+function crit(){SFX.ok();show('<div class="big">💥</div><h1 class="c">❤️ CRITICAL HIT</h1><p class="story c">You remembered.\n\nBut honestly...\nYou don\'t need to remember everything.\n\nI notice all the little things you do for me.</p><div class="hp"><i style="width:0%"></i></div><div class="c"><b>🏆 BOSS DEFEATED</b><br><button class="btn" onclick="win()">Continue ▶</button></div>')}
+function win(){SFX.win();S.rx=S.xp;S.xp="∞";show('<h1 class="c">👹 FINAL BOSS DEFEATED</h1><p class="story c">██████████████████\n\nBAABUUDA WINS\n\nXP: ∞\nRelationship Status: 1 YEAR ❤️</p><div class="ach c">🔓 NEW LEVEL UNLOCKED</div><div class="c"><button class="btn" onclick="fin()">LEVEL 10 ▶</button></div>')}
+function fin(){show('<div class="big bounce">💞</div><div class="tag">LEVEL 10 — THE FINAL REWARD</div><h1>QUEST COMPLETE</h1><p class="story">From two strangers who met on a dating site...\n\nto a shawarma date.\nTo late-night conversations.\nTo Christmas.\nTo temples.\nTo trekking with my family.\nTo Ganapati celebrations.\nTo one whole year of us.\n\nAnd somehow, this still feels like just the beginning. ❤️</p><div class="c"><b>🎁 BONUS STAGE UNLOCKED</b><br><button class="btn" onclick="game()">▶ PLAY BONUS</button></div>')}
+function game(){
+show('<div class="tag">BONUS STAGE</div><h2 class="c">CATCH THE HEARTS</h2><p class="story c">Move your finger or mouse to catch falling hearts. 15 seconds!</p><canvas id="cv" width="300" height="340"></canvas><div class="c" id="gi">SCORE 0</div>');
+var cv=document.getElementById("cv"),c=cv.getContext("2d"),px=150,hs=[],sc=0,t0=Date.now();
+function mv(e){var r=cv.getBoundingClientRect();px=Math.max(20,Math.min(280,(e.clientX-r.left)*300/r.width))}
+cv.addEventListener("pointermove",mv);cv.addEventListener("pointerdown",mv);
+function loop(){if(!document.body.contains(cv))return;var left=Math.ceil(15-(Date.now()-t0)/1000);
+if(left<=0){S.mg=sc;return stats()}
+if(Math.random()<.06)hs.push({x:20+Math.random()*260,y:-10,v:1.5+Math.random()*2.2});
+c.clearRect(0,0,300,340);c.font="22px serif";c.textAlign="center";
+hs.forEach(function(h){h.y+=h.v;c.fillText("❤️",h.x,h.y)});
+hs=hs.filter(function(h){if(h.y>300&&Math.abs(h.x-px)<32){sc++;tone(988,0,.06,"square",.07);return false}return h.y<350});
+c.fillText("🧺",px,332);
+document.getElementById("gi").textContent="SCORE "+sc+"  TIME "+left;
+requestAnimationFrame(loop)}
+loop()}
+function stats(){SFX.win();var tot=LV.length+BQ.length,acc=Math.round(tot/(tot+S.wr)*100),sec=Math.round((Date.now()-S.t)/1000);
+var rows=[["XP earned",S.rx],["Levels cleared",LV.length+" / "+LV.length],["Boss questions",BQ.length+" / "+BQ.length],["Wrong answers",S.wr],["Accuracy",acc+"%"],["Game overs",S.go],["Achievements",S.ach.length],["Hearts caught",S.mg],["Time played",Math.floor(sec/60)+"m "+(sec%60)+"s"]];
+show('<div class="big bounce">🏆</div><h2 class="c">QUEST STATS</h2><div class="st">'+rows.map(function(r){return"<div><span>"+r[0]+"</span><b>"+r[1]+"</b></div>"}).join("")+'</div><p class="story c">Hearts remaining: ∞\nCo-op partner: SHREYA\nTime together: 1 YEAR\n\nFuture adventures: LOCKED\nUnlock condition:\nKeep choosing each other.</p><div class="c"><button class="btn" onclick="love()">READ FINAL MESSAGE ▶</button></div>')}
+function love(){SFX.win();
+for(var i=0;i<14;i++){var h=document.createElement("span");h.className="fh";h.textContent=["💖","💗","❤️","💕"][i%4];h.style.left=(Math.random()*95)+"%";h.style.animationDelay=(Math.random()*6)+"s";document.body.appendChild(h)}
+show('<div class="big bounce">💖</div><h1 class="c">HAPPY BOYFRIEND\'S DAY, BAABUUDA ♡</h1><p class="story" style="color:var(--ink)">I love you more than any quiz, level or boss fight could ever show.\n\nI love the cute messages you send every day. I love the way you care. I love that you show up whenever I ask.\n\nYou sat behind me on a bike before we had even introduced ourselves, and somehow you never left. 😂\n\nOne whole year, and I would still choose you in every save file.\n\nYou are my favourite Player 2, my co-op partner, my person at 2 AM.\n\nI love you. Always. ❤️\n\n- Player 1, Shreya ♡</p><div class="c"><h1>THE END ♡</h1><b>REPLAY?</b><br><button class="btn" onclick="start()">YES ❤️</button><button class="btn" onclick="start()">OBVIOUSLY 😭</button></div>')}
+start();
+</script>
+</body>
+</html>
